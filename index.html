@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Registration Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Links the external CSS file -->
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <span class="navbar-brand mb-0 h1">Intention Declaration Form</span>
+    </nav>
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="form-container text-center">
+            <h4>Register Your Intent</h4><hr><br>
+            <form id="marriageForm" action="/submit_form" method="post">
+                <h5>Bride's Information</h5>
+                <div class="form-group">
+                    <label for="brideName">Full Name:</label>
+                    <input type="text" class="form-control" id="brideName" name="brideName" placeholder="Enter full name" required>
+                </div>
+		<div class="form-group">
+    		    <label for="brideEmail">Bride's Email:</label>
+    		    <input type="email" class="form-control" id="brideEmail" name="brideEmail" placeholder="Enter bride's email address" required>
+		</div>
+                <div class="form-group">
+                    <label for="brideDob">Date of Birth:</label>
+                    <input type="date" class="form-control" id="brideDob" name="brideDob" required>
+                    <small id="brideDobError" class="form-text text-danger"></small>
+                </div>
+		<div class="form-group">
+    		    <label for="marriageDate">Proposed Marriage Date:</label>
+                    <input type="date" class="form-control" id="marriageDate" name="marriageDate" required>
+                    <small id="marriageDateError" class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <label for="brideMaritalStatus">Marital Status:</label>
+                    <select id="brideMaritalStatus" name="brideMaritalStatus" class="form-control" required>
+                        <option value="">Select Status</option>
+                        <option value="Bachelorette">Bachelorette</option>
+                        <option value="Divorcee">Divorcee</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brideBloodGroup">Blood Group:</label>
+                    <select id="brideBloodGroup" name="brideBloodGroup" class="form-control" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="brideGenotype">Genotype:</label>
+                    <select id="brideGenotype" name="brideGenotype" class="form-control" required>
+                        <option value="">Select Genotype</option>
+                        <option value="AA">AA</option>
+                        <option value="AC">AC</option>
+                        <option value="AS">AS</option>
+                        <option value="SS">SS</option>
+                        <option value="SC">SC</option>
+                        <option value="CC">CC</option>
+                    </select>
+		    <small id="brideGenotypeError" class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <label for="brideConsent">Consent to Union:</label>
+                    <select id="brideConsent" name="brideConsent" class="form-control" required>
+                        <option value="">Select Consent</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <hr>
+                <h5>Groom's Information</h5>
+                <div class="form-group">
+                    <label for="groomName">Full Name:</label>
+                    <input type="text" class="form-control" id="groomName" name="groomName" placeholder="Enter full name" required>
+                </div>
+		<div class="form-group">
+    		    <label for="groomEmail">Groom's Email:</label>
+    		    <input type="email" class="form-control" id="groomEmail" name="groomEmail" placeholder="Enter groom's email address" required>
+		</div>
+                <div class="form-group">
+                    <label for="groomDob">Date of Birth:</label>
+                    <input type="date" class="form-control" id="groomDob" name="groomDob" required>
+                    <small id="groomDobError" class="form-text text-danger"></small>
+                </div>
+		<div class="form-group">
+    		    <label for="marriageDate">Proposed Marriage Date:</label>
+                    <input type="date" class="form-control" id="marriageDate" name="marriageDate" required>
+                    <small id="marriageDateError" class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <label for="groomMaritalStatus">Marital Status:</label>
+                    <select id="groomMaritalStatus" name="groomMaritalStatus" class="form-control" required>
+                        <option value="">Select Status</option>
+                        <option value="Bachelor">Bachelor</option>
+                        <option value="Divorcee">Divorcee</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groomBloodGroup">Blood Group:</label>
+                    <select id="groomBloodGroup" name="groomBloodGroup" class="form-control" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="groomGenotype">Genotype:</label>
+                    <select id="groomGenotype" name="groomGenotype" class="form-control" required>
+                        <option value="">Select Genotype</option>
+                        <option value="AA">AA</option>
+                        <option value="AC">AC</option>
+                        <option value="AS">AS</option>
+                        <option value="SS">SS</option>
+                        <option value="SC">SC</option>
+                        <option value="CC">CC</option>
+                    </select>
+           	    <small id="groomGenotypeError" class="form-text text-danger"></small>
+                </div>
+                <div class="form-group">
+                    <label for="groomConsent">Consent to Union:</label>
+                    <select id="groomConsent" name="groomConsent" class="form-control" required>
+                        <option value="">Select Consent</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <small id="genotypeError" class="form-text text-danger"></small>
+                <button type="submit" class="btn btn-light float-right">Submit</button>
+            </form>
+        </div>
+    </div><br><br><br>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2024 Omofolawa A-Adeniran. All rights reserved.</p><hr><br>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="tel:07828535724"><img src="https://www.logolynx.com/images/logolynx/48/48947ef0eda0ea05d97907887494553d.png" alt="Phone" style="width: 25px; height: auto;"></a></li>
+                <span>|</span>
+                <li class="list-inline-item"><a href="mailto:omofolawaadeniran@gmail.com"><img src="https://i.pinimg.com/736x/c3/83/aa/c383aac9b5c231365451910306c6a341.jpg" alt="Gmail" style="width: 30px; height: auto;"></a></li>
+                <span>|</span>
+                <li class="list-inline-item"><a href="https://github.com/Omofolawa" target="_blank"><img src="https://www.pngmart.com/files/23/Github-Logo-PNG.png" alt="GitHub" style="width: 25px; height: auto;"></a></li>
+                <span>|</span>
+                <li class="list-inline-item"><a href="https://www.linkedin.com/in/omofolawa-a-adeniran-426726133/" target="_blank"><img src="http://www.pngall.com/wp-content/uploads/2016/07/Linkedin-PNG-Pic.png" alt="LinkedIn" style="width: 25px; height: auto;"></a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('marriageForm');
+    const brideName = document.getElementById('brideName');
+    const brideEmail = document.getElementById('brideEmail');
     const brideDob = document.getElementById('brideDob');
-
+    const groomName = document.getElementById('groomName');
+    const groomEmail = document.getElementById('groomEmail');
     const groomDob = document.getElementById('groomDob');
     const brideDobError = document.getElementById('brideDobError');
     const groomDobError = document.getElementById('groomDobError');

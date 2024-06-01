@@ -53,25 +53,45 @@ document.addEventListener('DOMContentLoaded', () => {
             groomGenotypeError.textContent = '';
         }
 
-        const brideProposedDateValue = new Date(brideProposedDate.value);
-        const groomProposedDateValue = new Date(groomProposedDate.value);
-        const minDate = new Date();
-        minDate.setDate(today.getDate() + 29);
+        // This piece of code defines the parameters to validate the proposed date by the bride and groom
+	    const today = new Date();
+	    const minDate = new Date(today);
+	    minDate.setDate(today.getDate() + 29); // Add 29 days to today
 
-        if (brideProposedDateValue < minDate) {
+    	if (brideProposedDateValue < minDate) {
             brideProposedDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
-            isValid = false;
-        } else {
-            brideProposedDateError.textContent = '';
-        }
+    	    isValid = false;
+   	    } else {
+	    brideProposedDateError.textContent = '';
+	    }
 
-        if (groomProposedDateValue < minDate) {
-            groomProposedDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
+    	if (groomProposedDateValue < minDate) {
+    	    groomProposedDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
             isValid = false;
-        } else {
-            groomProposedDateError.textContent = '';
-        }
+	    } else {
+    	    groomProposedDateError.textContent = '';
+	    }
 
+        // This piece of code defines the parameters to validate the status of consent by the bride and groom
+        const brideConsent = document.getElementById('brideConsent');
+        const groomConsent = document.getElementById('groomConsent');
+
+        // Validate when either consent changes
+        brideConsent.addEventListener('change', validateConsent);
+        groomConsent.addEventListener('change', validateConsent);
+
+        function validateConsent() {
+        const brideValue = brideConsent.value;
+        const groomValue = groomConsent.value;
+
+        if (brideValue === 'No' || groomValue === 'No') {
+            // Show error message
+            alert('Consent Must be Yes to Proceed');
+        } else {
+            // Do nothing
+        }
+    	}
+        
         if (isValid) {
             // Gather form data
             const formData = {

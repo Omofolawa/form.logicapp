@@ -1,10 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('marriageForm');
-    const brideName = document.getElementById('brideName');
-    const brideEmail = document.getElementById('brideEmail');
     const brideDob = document.getElementById('brideDob');
-    const groomName = document.getElementById('groomName');
-    const groomEmail = document.getElementById('groomEmail');
     const groomDob = document.getElementById('groomDob');
     const brideDobError = document.getElementById('brideDobError');
     const groomDobError = document.getElementById('groomDobError');
@@ -12,10 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const groomGenotype = document.getElementById('groomGenotype');
     const brideGenotypeError = document.getElementById('brideGenotypeError');
     const groomGenotypeError = document.getElementById('groomGenotypeError');
-    const brideProposedDate = document.getElementById('brideProposedDate');
-    const groomProposedDate = document.getElementById('groomProposedDate');
-    const brideProposedDateError = document.getElementById('brideProposedDateError');
-    const groomProposedDateError = document.getElementById('groomProposedDateError');
+    const marriageDate = document.getElementById('marriageDate');
+    const marriageDateError = document.getElementById('marriageDateError');
+    const brideEmail = document.getElementById('brideEmail');
+    const groomEmail = document.getElementById('groomEmail');
+    const brideEmailError = document.getElementById('brideEmailError');
+    const groomEmailError = document.getElementById('groomEmailError');
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -23,6 +21,28 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
         const today = new Date();
 
+        // Email validation function
+        const validateEmail = (email) => {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        };
+
+        // Validate emails
+        if (!validateEmail(brideEmail.value)) {
+            brideEmailError.textContent = 'Invalid email address.';
+            isValid = false;
+        } else {
+            brideEmailError.textContent = '';
+        }
+
+        if (!validateEmail(groomEmail.value)) {
+            groomEmailError.textContent = 'Invalid email address.';
+            isValid = false;
+        } else {
+            groomEmailError.textContent = '';
+        }
+
+        // Validate ages
         const brideAge = today.getFullYear() - new Date(brideDob.value).getFullYear();
         const groomAge = today.getFullYear() - new Date(groomDob.value).getFullYear();
 
@@ -40,14 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
             groomDobError.textContent = '';
         }
 
+        // Validate genotypes
         const brideGenotypeValue = brideGenotype.value;
         const groomGenotypeValue = groomGenotype.value;
 
-        if (brideGenotypeValue === 'AS' && groomGenotypeValue === 'AS' ||
-            brideGenotypeValue === 'AC' && groomGenotypeValue === 'AC' ||
-            brideGenotypeValue === 'SS' && groomGenotypeValue === 'SS' ||
-            brideGenotypeValue === 'SC' && groomGenotypeValue === 'SC' ||
-            brideGenotypeValue === 'CC' && groomGenotypeValue === 'CC') {
+        if ((brideGenotypeValue === 'AS' && groomGenotypeValue === 'AS') ||
+            (brideGenotypeValue === 'AC' && groomGenotypeValue === 'AC') ||
+            (brideGenotypeValue === 'SS' && groomGenotypeValue === 'SS') ||
+            (brideGenotypeValue === 'SC' && groomGenotypeValue === 'SC') ||
+            (brideGenotypeValue === 'CC' && groomGenotypeValue === 'CC')) {
             brideGenotypeError.textContent = 'Genotype Incompatibility, Please Seek Medical Advice';
             groomGenotypeError.textContent = 'Genotype Incompatibility, Please Seek Medical Advice';
             isValid = false;
@@ -56,69 +77,50 @@ document.addEventListener('DOMContentLoaded', () => {
             groomGenotypeError.textContent = '';
         }
 
-        // This piece of code defines the parameters to validate the proposed date by the bride and groom
-	    const today = new Date();
-	    const minDate = new Date(today);
-	    minDate.setDate(today.getDate() + 29); // Add 29 days to today
+        // Validate proposed marriage date
+        const marriageDateValue = new Date(marriageDate.value);
+        const minDate = new Date(today);
+        minDate.setDate(today.getDate() + 29); // Add 29 days to today
 
-    	if (brideProposedDateValue < minDate) {
-            brideProposedDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
-    	    isValid = false;
-   	    } else {
-	    brideProposedDateError.textContent = '';
-	    }
-
-    	if (groomProposedDateValue < minDate) {
-    	    groomProposedDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
+        if (marriageDateValue < minDate) {
+            marriageDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
             isValid = false;
-	    } else {
-    	    groomProposedDateError.textContent = '';
-	    }
-
-        // This piece of code defines the parameters to validate the status of consent by the bride and groom
-        const brideConsent = document.getElementById('brideConsent');
-        const groomConsent = document.getElementById('groomConsent');
-
-        // Validate when either consent changes
-        brideConsent.addEventListener('change', validateConsent);
-        groomConsent.addEventListener('change', validateConsent);
-
-        function validateConsent() {
-        const brideValue = brideConsent.value;
-        const groomValue = groomConsent.value;
-
-        if (brideValue === 'No' || groomValue === 'No') {
-            // Show error message
-            alert('Consent Must be Yes to Proceed');
         } else {
-            // Do nothing
+            marriageDateError.textContent = '';
         }
-    	}
-        
+
+        // Validate consent
+        const brideConsent = document.getElementById('brideConsent').value;
+        const groomConsent = document.getElementById('groomConsent').value;
+
+        if (brideConsent === 'No' || groomConsent === 'No') {
+            alert('Consent Must be Yes to Proceed');
+            isValid = false;
+        }
+
+        // Submit the form if all validations pass
         if (isValid) {
-            // Gather form data
             const formData = {
                 brideName: document.getElementById('brideName').value,
-                brideEmail: document.getElementById('brideEmail').value,
+                brideEmail: brideEmail.value,
                 brideDob: brideDob.value,
                 brideMaritalStatus: document.getElementById('brideMaritalStatus').value,
-                brideConsent: document.querySelector('input[name="brideConsent"]:checked').value,
+                brideConsent: brideConsent,
                 groomName: document.getElementById('groomName').value,
-                groomEmail: document.getElementById('groomEmail').value,
+                groomEmail: groomEmail.value,
                 groomDob: groomDob.value,
                 groomMaritalStatus: document.getElementById('groomMaritalStatus').value,
-                groomConsent: document.querySelector('input[name="groomConsent"]:checked').value,
+                groomConsent: groomConsent,
                 brideBloodGroup: document.getElementById('brideBloodGroup').value,
                 groomBloodGroup: document.getElementById('groomBloodGroup').value,
                 brideGenotype: brideGenotype.value,
                 groomGenotype: groomGenotype.value,
-                brideProposedDate: brideProposedDate.value,
-                groomProposedDate: groomProposedDate.value
+                marriageDate: marriageDate.value
             };
 
             const jsonData = JSON.stringify(formData);
 
-            fetch('', {
+            fetch('https://forecasta.azurewebsites.net:443/api/formlogic/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=Ego5vznZUh7w5f3f0CGyapbYOTC8KkY-W09P40Zi_HA', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -138,9 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Set the minimum date attribute to ensure the browser UI prevents selecting an earlier date
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 29);
-    brideProposedDate.setAttribute('min', minDate.toISOString().split('T')[0]);
-    groomProposedDate.setAttribute('min', minDate.toISOString().split('T')[0]);
+    marriageDate.setAttribute('min', minDate.toISOString().split('T')[0]);
 });

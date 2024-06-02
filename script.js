@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const jsonData = JSON.stringify(formData);
 
-            fetch('https://forecasta.azurewebsites.net:443/api/formlogic/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=Ego5vznZUh7w5f3f0CGyapbYOTC8KkY-W09P40Zi_HA', {
+            fetch('https://forecasta.azurewebsites.net', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -118,27 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 marriageDate: marriageDate.value
             };
 
-            const jsonData = JSON.stringify(formData);
-
-            fetch('https://forecasta.azurewebsites.net', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: jsonData
-            }).then(response => {
-                if (response.ok) {
-                    alert('Form submitted successfully!');
-                    form.reset();
-                } else {
-                    alert('Failed to submit the form.');
-                }
-            }).catch(error => {
-                console.error('Error submitting the form:', error);
-                alert('An error occurred while submitting the form.');
-            });
-        }
-    });
+            fetch('https://forecasta.azurewebsites.net:443/api/formlogic/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=Ego5vznZUh7w5f3f0CGyapbYOTC8KkY-W09P40Zi_HA', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Success:', result);
+            alert('Form submitted successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting the form. Please try again.');
+        });
 
     const minDate = new Date();
     minDate.setDate(minDate.getDate() + 29);

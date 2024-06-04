@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if ((brideGenotypeValue === 'AS' && groomGenotypeValue === 'AS') ||
             (brideGenotypeValue === 'AC' && groomGenotypeValue === 'AC') ||
+            (brideGenotypeValue === 'AC' && groomGenotypeValue === 'AS') ||
+            (brideGenotypeValue === 'AC' && groomGenotypeValue === 'CC') ||
+            (brideGenotypeValue === 'AC' && groomGenotypeValue === 'SC') ||
             (brideGenotypeValue === 'SS' && groomGenotypeValue === 'SS') ||
             (brideGenotypeValue === 'SC' && groomGenotypeValue === 'SC') ||
             (brideGenotypeValue === 'CC' && groomGenotypeValue === 'CC')) {

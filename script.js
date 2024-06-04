@@ -15,19 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const brideEmailError = document.getElementById('brideEmailError');
     const groomEmailError = document.getElementById('groomEmailError');
 
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 29);
+    marriageDate.setAttribute('min', minDate.toISOString().split('T')[0]);
+
     form.addEventListener('submit', (event) => {
         event.preventDefault();
 
         let isValid = true;
         const today = new Date();
 
-        // Email validation function
         const validateEmail = (email) => {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(String(email).toLowerCase());
         };
 
-        // Validate emails
         if (!validateEmail(brideEmail.value)) {
             brideEmailError.textContent = 'Invalid email address.';
             isValid = false;
@@ -42,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
             groomEmailError.textContent = '';
         }
 
-        // Validate ages
         const brideAge = today.getFullYear() - new Date(brideDob.value).getFullYear();
         const groomAge = today.getFullYear() - new Date(groomDob.value).getFullYear();
 
@@ -60,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             groomDobError.textContent = '';
         }
 
-        // Validate genotypes
         const brideGenotypeValue = brideGenotype.value;
         const groomGenotypeValue = groomGenotype.value;
 
@@ -77,11 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             groomGenotypeError.textContent = '';
         }
 
-        // Validate proposed marriage date
         const marriageDateValue = new Date(marriageDate.value);
-        const minDate = new Date(today);
-        minDate.setDate(today.getDate() + 29); // Add 29 days to today
-
         if (marriageDateValue < minDate) {
             marriageDateError.textContent = 'The proposed marriage date must be at least 29 days from today.';
             isValid = false;
@@ -89,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
             marriageDateError.textContent = '';
         }
 
-        // Validate consent
         const brideConsent = document.getElementById('brideConsent').value;
         const groomConsent = document.getElementById('groomConsent').value;
 
@@ -98,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         }
 
-        // Submit the form if all validations pass
         if (isValid) {
             const formData = {
                 brideName: document.getElementById('brideName').value,
@@ -119,23 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             fetch('https://forecasta.azurewebsites.net:443/api/formlogik/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=velWKOwqlrQny3snNp6b1yg5KwU3UKvzRZ3Q46-H-1E', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(result => {
-            console.log('Success:', result);
-            alert('Form submitted successfully!');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error submitting the form. Please try again.');
-        });
-
-    const minDate = new Date();
-    minDate.setDate(minDate.getDate() + 29);
-    marriageDate.setAttribute('min', minDate.toISOString().split('T')[0]);
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                alert('Form submitted successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting the form. Please try again.');
+            });
+        }
+    });
 });

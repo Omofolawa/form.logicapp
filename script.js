@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(result => {
                 console.log('Success:', result);
                 alert('Form submitted successfully!');
+                form.reset(); // Reset the form after successful submission
             })
             .catch(error => {
                 console.error('Error:', error);

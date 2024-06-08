@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 marriageDate: marriageDate.value
             };
 
-            fetch('https://forecasta.azurewebsites.net:443/api/formlogik/triggers/When_a_HTTP_request_is_received/invoke?api-version=2022-05-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=velWKOwqlrQny3snNp6b1yg5KwU3UKvzRZ3Q46-H-1E', {
+            fetch('https://prod-11.uksouth.logic.azure.com:443/workflows/5ef4363ef463487ebcd8b19c8723d5ff/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=2XrISlwEYyC3oOadwYvCzF21o6Bsy31WlECFZ77MY_Y', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

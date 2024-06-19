@@ -23,7 +23,33 @@ Notification System
 - Integration with Email Services: Using Azure’s built-in connectors, the Logic App integrates with email services to automate the sending of notifications.
 - Customizable Email Templates: The emails can be customized to include details of the submission, providing immediate feedback to the users.
 
-Data Ingestion and Archiving
+Error Handling Implementation and Efficiency
+
+Implementation
+
+1. Primary Scope:
+   - Groups all main workflow actions: HTTP request trigger, JSON parsing, data composition, blob creation, and email notification.
+   - Monitors for any failures to trigger error handling.
+
+2. Secondary Scope:
+   - Captures and processes errors from the Primary Scope.
+   - Creates a custom error message and sends an email notification to the system administrator with error details.
+
+Efficiency
+
+1. Proactive Issue Resolution: Immediate detection and communication of errors allow for swift response and resolution.
+
+2. Automated Notifications: Reduces the need for manual monitoring by sending detailed error notifications automatically.
+
+3. Comprehensive Error Details: Provides detailed error messages for faster diagnosis and troubleshooting.
+
+4. Enhanced Workflow Resilience: Improves the robustness of the Logic App, ensuring errors do not disrupt the entire workflow.
+
+5. Clear Documentation and Communication: Promotes continuous improvement through clear documentation and communication of issues and resolutions.
+
+The error handling implementation enhances the Logic App's efficiency, reliability, and maintainability by ensuring prompt error detection, communication, and resolution.
+
+Data Ingestion and Archiving Capabilities
 - Azure Data Factory: Periodically, Azure Data Factory is used to ingest the stored JSON data from Azure Blob Storage and transfer it to an Azure database.
 - Scheduled Ingestion: Data Factory pipelines are scheduled to run at regular intervals, ensuring up-to-date data is available in the database.
 - Data Transformation: During ingestion, data can be transformed as needed to fit the database schema.

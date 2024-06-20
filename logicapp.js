@@ -2,300 +2,344 @@
     "definition": {
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
-            "Compose": {
-                "inputs": "@body('Parse_JSON')",
-                "runAfter": {
-                    "Parse_JSON": [
-                        "Succeeded"
-                    ]
-                },
-                "type": "Compose"
-            },
-            "Create_blob_(V2)": {
-                "inputs": {
-                    "body": "@outputs('Compose')",
-                    "headers": {
-                        "ReadFileMetadataFromServer": true
+            "Primary_Scope": {
+                "actions": {
+                    "Compose_JSON_Data": {
+                        "inputs": "@body('Parse_JSON')",
+                        "runAfter": {
+                            "Parse_JSON": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "Compose"
                     },
-                    "host": {
-                        "connection": {
-                            "name": "@parameters('$connections')['azureblob']['connectionId']"
-                        }
+                    "Create_blob_(V2)": {
+                        "inputs": {
+                            "body": "@outputs('Compose_JSON_Data')",
+                            "headers": {
+                                "ReadFileMetadataFromServer": true
+                            },
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['azureblob']['connectionId']"
+                                }
+                            },
+                            "method": "post",
+                            "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files",
+                            "queries": {
+                                "folderPath": "/marrigeregformsjson",
+                                "name": "form-submissions-@{utcNow('yyyy-MM-ddTHH-mm-ss')}.json",
+                                "queryParametersSingleEncoded": true
+                            }
+                        },
+                        "runAfter": {
+                            "Compose_JSON_Data": [
+                                "Succeeded"
+                            ]
+                        },
+                        "runtimeConfiguration": {
+                            "contentTransfer": {
+                                "transferMode": "Chunked"
+                            }
+                        },
+                        "type": "ApiConnection"
                     },
-                    "method": "post",
-                    "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files",
-                    "queries": {
-                        "folderPath": "/marrigeregformsjson",
-                        "name": "form-submissions-@{utcNow('yyyy-MM-ddTHH-mm-ss')}.json",
-                        "queryParametersSingleEncoded": true
-                    }
-                },
-                "runAfter": {
-                    "Compose": [
-                        "Succeeded"
-                    ]
-                },
-                "runtimeConfiguration": {
-                    "contentTransfer": {
-                        "transferMode": "Chunked"
-                    }
-                },
-                "type": "ApiConnection"
-            },
-            "Parse_JSON": {
-                "inputs": {
-                    "content": "@triggerBody()",
-                    "schema": {
-                        "properties": {
-                            "properties": {
+                    "Parse_JSON": {
+                        "inputs": {
+                            "content": "@triggerBody()",
+                            "schema": {
                                 "properties": {
-                                    "brideBloodGroup": {
+                                    "properties": {
                                         "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideBloodGroup": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "brideConsent": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideConsent": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "brideDob": {
-                                        "properties": {
-                                            "format": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "brideEmail": {
-                                        "properties": {
-                                            "format": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "brideGenotype": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideDob": {
+                                                "properties": {
+                                                    "format": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "brideMaritalStatus": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideEmail": {
+                                                "properties": {
+                                                    "format": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "brideName": {
-                                        "properties": {
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "groomBloodGroup": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideGenotype": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "groomConsent": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideMaritalStatus": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "groomDob": {
-                                        "properties": {
-                                            "format": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "groomEmail": {
-                                        "properties": {
-                                            "format": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "groomGenotype": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "brideName": {
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
-                                    },
-                                    "groomMaritalStatus": {
-                                        "properties": {
-                                            "enum": {
-                                                "items": {
-                                                    "type": "string"
+                                            "groomBloodGroup": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
                                                 },
-                                                "type": "array"
+                                                "type": "object"
                                             },
-                                            "type": {
-                                                "type": "string"
+                                            "groomConsent": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "groomDob": {
+                                                "properties": {
+                                                    "format": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "groomEmail": {
+                                                "properties": {
+                                                    "format": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "groomGenotype": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "groomMaritalStatus": {
+                                                "properties": {
+                                                    "enum": {
+                                                        "items": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "groomName": {
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "marriageDate": {
+                                                "properties": {
+                                                    "format": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
                                             }
                                         },
                                         "type": "object"
                                     },
-                                    "groomName": {
-                                        "properties": {
-                                            "type": {
-                                                "type": "string"
-                                            }
+                                    "required": {
+                                        "items": {
+                                            "type": "string"
                                         },
-                                        "type": "object"
+                                        "type": "array"
                                     },
-                                    "marriageDate": {
-                                        "properties": {
-                                            "format": {
-                                                "type": "string"
-                                            },
-                                            "type": {
-                                                "type": "string"
-                                            }
-                                        },
-                                        "type": "object"
+                                    "type": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
-                            },
-                            "required": {
-                                "items": {
-                                    "type": "string"
-                                },
-                                "type": "array"
-                            },
-                            "type": {
-                                "type": "string"
                             }
                         },
-                        "type": "object"
+                        "type": "ParseJson"
+                    },
+                    "Send_Summary_Email_to_Bride": {
+                        "inputs": {
+                            "body": {
+                                "Body": "<p>Dear @{body('Parse_JSON')['brideName']},</p><p><span>\n</span>Thank you for submitting your marriage intent registration form. We are pleased to inform you that your details have been successfully received and will be processed accordingly.</p><br><p>Below is a summary of your submission:</p><ul><li>Bride's Name: @{body('Parse_JSON')['brideName']}</li><li>Bride's Genotype: @{body('Parse_JSON')['brideGenotype']}</li><li>Bride's Consent Status: @{body('Parse_JSON')['brideConsent']}</li><li>Groom's Name: @{body('Parse_JSON')['groomName']}</li><li>Groom's Genotype: @{body('Parse_JSON')['groomGenotype']}</li><li>Groom's Consent Status: @{body('Parse_JSON')['groomConsent']}</li><li>Wedding Date: @{body('Parse_JSON')['marriageDate']}</li></ul><p>Please check your email for update on the processi in the next 7 days. If you have any questions or require further assistance, please do not hesitate to contact us.</p><br><p>Best regards,</p><p>Marriage Data Management</p>",
+                                "Importance": "Normal",
+                                "Subject": "Confirmation of Marriage Intent Registration",
+                                "To": "@{body('Parse_JSON')['brideEmail']}"
+                            },
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['outlook']['connectionId']"
+                                }
+                            },
+                            "method": "post",
+                            "path": "/v2/Mail"
+                        },
+                        "runAfter": {
+                            "Create_blob_(V2)": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "ApiConnection"
+                    },
+                    "Send_Summary_Email_to_Groom": {
+                        "inputs": {
+                            "body": {
+                                "Body": "<p>Dear @{body('Parse_JSON')['groomName']},</p><p>Thank you for submitting your marriage intent registration form. We are pleased to inform you that your details have been successfully received and will be processed accordingly.</p><br><p>Below is a summary of your submission:</p><ul><li>Bride's Name: @{body('Parse_JSON')['brideName']}</li><li>Bride's Genotype: @{body('Parse_JSON')['brideGenotype']}</li><li>Bride's Consent Status: @{body('Parse_JSON')['brideConsent']}</li><li>Groom's Name: @{body('Parse_JSON')['groomName']}</li><li>Groom's Genotype: @{body('Parse_JSON')['groomGenotype']}</li><li>Groom's Consent Status: @{body('Parse_JSON')['groomConsent']}</li><li>Wedding Date: @{body('Parse_JSON')['marriageDate']}</li></ul><p>Please check your email for update on the processi in the next 7 days. If you have any questions or require further assistance, please do not hesitate to contact us.</p><br><p>Best regards,</p><p>Marriage Data Management</p>",
+                                "Importance": "Normal",
+                                "Subject": "Confirmation of Marriage Intent Registration",
+                                "To": "@{body('Parse_JSON')['groomEmail']}"
+                            },
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['outlook']['connectionId']"
+                                }
+                            },
+                            "method": "post",
+                            "path": "/v2/Mail"
+                        },
+                        "runAfter": {
+                            "Create_blob_(V2)": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "ApiConnection"
                     }
                 },
                 "runAfter": {},
-                "type": "ParseJson"
+                "type": "Scope"
             },
-            "Send_Summary_Email_to_Bride": {
-                "inputs": {
-                    "body": {
-                        "Body": "<p>Dear @{body('Parse_JSON')['brideName']},<br>Thank you for submitting your marriage intent registration form. We are pleased to inform you that your details have been successfully received and will be processed accordingly.</p><br><p>Below is a summary of your submission:</p><ul><li>Bride's Name: @{body('Parse_JSON')['brideName']}</li><li>Bride's Genotype: @{body('Parse_JSON')['brideGenotype']}</li><li>Bride's Consent Status: @{body('Parse_JSON')['brideConsent']}</li><li>Groom's Name: @{body('Parse_JSON')['groomName']}</li><li>Groom's Genotype: @{body('Parse_JSON')['groomGenotype']}</li><li>Groom's Consent Status: @{body('Parse_JSON')['groomConsent']}</li><li>Wedding Date: @{body('Parse_JSON')['marriageDate']}</li></ul><p>Please check your email for update on the processi in the next 7 days. If you have any questions or require further assistance, please do not hesitate to contact us.</p><br><p>Best regards,</p><p>Marriage Data Management</p>",
-                        "Importance": "Normal",
-                        "Subject": "Confirmation of Marriage Intent Registration",
-                        "To": "@{body('Parse_JSON')['brideEmail']}"
+            "Secondary_Scope": {
+                "actions": {
+                    "Compose_Error_Alert": {
+                        "inputs": "@triggerBody()",
+                        "type": "Compose"
                     },
-                    "host": {
-                        "connection": {
-                            "name": "@parameters('$connections')['outlook']['connectionId']"
-                        }
-                    },
-                    "method": "post",
-                    "path": "/v2/Mail"
+                    "error_alert__to_workflow_administrator": {
+                        "inputs": {
+                            "body": {
+                                "Body": "<p>Dear Workflow Administrator,</p><br><p>An error has occurred in the Logic App workflow:</p><br><p>@{outputs('Compose_Error_Alert')}</p>",
+                                "Importance": "High",
+                                "Subject": "Logic Workflow Error Notification",
+                                "To": "omofolawaadeniran@gmail.com"
+                            },
+                            "host": {
+                                "connection": {
+                                    "name": "@parameters('$connections')['outlook']['connectionId']"
+                                }
+                            },
+                            "method": "post",
+                            "path": "/v2/Mail"
+                        },
+                        "runAfter": {
+                            "Compose_Error_Alert": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "ApiConnection"
+                    }
                 },
                 "runAfter": {
-                    "Create_blob_(V2)": [
-                        "Succeeded"
+                    "Primary_Scope": [
+                        "Failed",
+                        "TimedOut",
+                        "Skipped"
                     ]
                 },
-                "type": "ApiConnection"
-            },
-            "Send_Summary_Email_to_Groom": {
-                "inputs": {
-                    "body": {
-                        "Body": "<p>Dear @{body('Parse_JSON')['groomName']},</p><p>Thank you for submitting your marriage intent registration form. We are pleased to inform you that your details have been successfully received and will be processed accordingly.</p><br><p>Below is a summary of your submission:</p><ul><li>Bride's Name: @{body('Parse_JSON')['brideName']}</li><li>Bride's Genotype: @{body('Parse_JSON')['brideGenotype']}</li><li>Bride's Consent Status: @{body('Parse_JSON')['brideConsent']}</li><li>Groom's Name: @{body('Parse_JSON')['groomName']}</li><li>Groom's Genotype: @{body('Parse_JSON')['groomGenotype']}</li><li>Groom's Consent Status: @{body('Parse_JSON')['groomConsent']}</li><li>Wedding Date: @{body('Parse_JSON')['marriageDate']}</li></ul><p>Please check your email for update on the processi in the next 7 days. If you have any questions or require further assistance, please do not hesitate to contact us.</p><br><p>Best regards,</p><p>Marriage Data Management</p>",
-                        "Importance": "Normal",
-                        "Subject": "Confirmation of Marriage Intent Registration",
-                        "To": "@{body('Parse_JSON')['groomEmail']}"
-                    },
-                    "host": {
-                        "connection": {
-                            "name": "@parameters('$connections')['outlook']['connectionId']"
-                        }
-                    },
-                    "method": "post",
-                    "path": "/v2/Mail"
-                },
-                "runAfter": {
-                    "Create_blob_(V2)": [
-                        "Succeeded"
-                    ]
-                },
-                "type": "ApiConnection"
+                "type": "Scope"
             }
         },
         "contentVersion": "1.0.0.0",
